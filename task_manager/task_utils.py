@@ -36,3 +36,22 @@ def mark_task_as_complete(task_id):
     task["completed"] = True
     return True
 
+def view_pending_tasks():
+    return [task for task in tasks if not task["completed"]]
+
+
+def view_all_tasks():
+    return list(tasks)
+
+
+def calculate_progress():
+    total = len(tasks)
+    completed = sum(1 for task in tasks if task["completed"])
+    return {
+        "total_tasks": total,
+        "completed_tasks": completed,
+        "pending_tasks": total - completed,
+        "completion_percentage": round(completed / total * 100, 2) if total else 0.0,
+    }
+
+
