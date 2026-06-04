@@ -176,4 +176,23 @@ def main():
             for task in all_tasks:
                 print_task(task, show_status=True)
 
+        elif choice == "5":
+            print("\n--- Progress Summary ---")
+            progress = calculate_progress()
+            print(f"Total Tasks: {progress['total_tasks']}")
+            print(f"Completed Tasks: {progress['completed_tasks']}")
+            print(f"Pending Tasks: {progress['pending_tasks']}")
+            print(f"Completion Percentage: {progress['completion_percentage']}%")
+
+        elif choice == "6":
+            print("Exiting the program...")
+            break
+
+        else:
+            print("Invalid choice. Please try again.")
+
+
+if __name__ == "__main__":
+    main()
+
 
