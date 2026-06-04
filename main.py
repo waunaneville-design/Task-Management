@@ -62,4 +62,20 @@ def add_task(title, description, due_date):
     tasks.append(task)
     return task
 
+def mark_task_as_complete(task_id):
+    try:
+        task_id = int(task_id)
+    except (TypeError, ValueError):
+        return False, "Task ID must be a number."
+
+    for task in tasks:
+        if task["id"] == task_id:
+            if task["completed"]:
+                return False, f"Task '{task['title']}' is already completed."
+            task["completed"] = True
+            return True, f"Task '{task['title']}' has been marked as complete."
+
+    return False, f"Task with ID {task_id} not found."
+
+
 
