@@ -77,5 +77,25 @@ def mark_task_as_complete(task_id):
 
     return False, f"Task with ID {task_id} not found."
 
+def view_pending_tasks():
+    return [task for task in tasks if not task["completed"]]
+
+
+def view_all_tasks():
+    return list(tasks)
+
+
+def calculate_progress():
+    total_tasks = len(tasks)
+    completed_tasks = sum(1 for task in tasks if task["completed"])
+    pending_tasks = total_tasks - completed_tasks
+    completion_percentage = round((completed_tasks / total_tasks * 100), 2) if total_tasks else 0.0
+
+    return {
+        "total_tasks": total_tasks,
+        "completed_tasks": completed_tasks,
+        "pending_tasks": pending_tasks,
+        "completion_percentage": completion_percentage,
+    }
 
 
