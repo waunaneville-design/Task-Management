@@ -124,5 +124,30 @@ def display_menu():
     print("6. Exit")
     print("==================================================")
 
+def main():
+    while True:
+        display_menu()
+        choice = prompt_input("Enter your choice (1-6): ")
+
+        if choice == "1":
+            print("\n--- Add New Task ---")
+            title = prompt_input("Enter task title: ")
+            description = prompt_input("Enter task description: ")
+            due_date = prompt_input("Enter due date (YYYY-MM-DD): ")
+
+            try:
+                task = add_task(title, description, due_date)
+                print("\n✓ Task added successfully!")
+                print_task(task, show_status=True)
+            except Exception as error:
+                print(f"✗ Error: {error}")
+
+        elif choice == "2":
+            print("\n--- Mark Task as Complete ---")
+            pending = view_pending_tasks()
+            if not pending:
+                print("No pending tasks available.")
+                continue
+
 
 
