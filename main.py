@@ -27,4 +27,23 @@ def validate_task_description(description):
 
     return description
 
+def validate_due_date(due_date):
+    if not isinstance(due_date, str):
+        raise TypeError("Due date must be a string.")
+
+    due_date = due_date.strip()
+    if len(due_date) == 0:
+        raise ValueError("Due date cannot be empty.")
+
+    try:
+        parsed_date = datetime.strptime(due_date, "%Y-%m-%d").date()
+    except ValueError:
+        raise ValueError("Due date must be in the format YYYY-MM-DD.")
+
+    if parsed_date <= datetime.now().date():
+        raise ValueError("Due date must be a future date.")
+
+    return due_date
+
+
 
