@@ -20,3 +20,19 @@ def add_task(title, description, due_date):
     tasks.append(task)
     return task
 
+def get_task(task_id):
+    try:
+        task_id = int(task_id)
+    except (TypeError, ValueError):
+        return None
+
+    return next((task for task in tasks if task["id"] == task_id), None)
+
+
+def mark_task_as_complete(task_id):
+    task = get_task(task_id)
+    if not task:
+        return False
+    task["completed"] = True
+    return True
+
