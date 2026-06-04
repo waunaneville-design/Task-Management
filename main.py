@@ -149,5 +149,31 @@ def main():
                 print("No pending tasks available.")
                 continue
 
+            for task in pending:
+                print(f"ID: {task['id']} - {task['title']} (Due: {task['due_date']})")
+
+            task_id = prompt_input("Enter the task ID to mark as complete: ")
+            success, message = mark_task_as_complete(task_id)
+            print(f"{message}")
+
+        elif choice == "3":
+            print("\n--- Pending Tasks ---")
+            pending = view_pending_tasks()
+            if not pending:
+                print("No pending tasks found.")
+                continue
+
+            for task in pending:
+                print_task(task)
+
+        elif choice == "4":
+            print("\n--- All Tasks ---")
+            all_tasks = view_all_tasks()
+            if not all_tasks:
+                print("No tasks have been added yet.")
+                continue
+
+            for task in all_tasks:
+                print_task(task, show_status=True)
 
 
