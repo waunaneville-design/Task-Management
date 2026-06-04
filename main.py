@@ -15,3 +15,16 @@ def validate_task_title(title):
 
     return title
 
+def validate_task_description(description):
+    if not isinstance(description, str):
+        raise TypeError("Description must be a string.")
+
+    description = description.strip()
+    if len(description) == 0:
+        raise ValueError("Description cannot be empty.")
+    if len(description) < 5:
+        raise ValueError("Description must be at least 5 characters long.")
+
+    return description
+
+
