@@ -98,4 +98,31 @@ def calculate_progress():
         "completion_percentage": completion_percentage,
     }
 
+def prompt_input(prompt_text):
+    return input(prompt_text).strip()
+
+def print_task(task, show_status=False):
+    status = "✓ Completed" if task["completed"] else "○ Pending"
+    print(f"ID: {task['id']}")
+    print(f"Title: {task['title']}")
+    print(f"Description: {task['description']}")
+    print(f"Due Date: {task['due_date']}")
+    print(f"Created At: {task['created_at']}")
+    if show_status:
+        print(f"Status: {status}")
+    print("--------------------------------------------------")
+
+
+def display_menu():
+    print("\nTask Management System")
+    print("==================================================")
+    print("1. Add Task")
+    print("2. Mark Task as Complete")
+    print("3. View Pending Tasks")
+    print("4. View All Tasks")
+    print("5. View Progress")
+    print("6. Exit")
+    print("==================================================")
+
+
 
