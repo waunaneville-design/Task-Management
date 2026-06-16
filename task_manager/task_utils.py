@@ -32,9 +32,11 @@ def get_task(task_id):
 def mark_task_as_complete(task_id):
     task = get_task(task_id)
     if not task:
-        return False
+        return False, f"Task with ID {task_id} not found."
+    if task["completed"]:
+        return False, f"Task '{task['title']}' is already completed."
     task["completed"] = True
-    return True
+    return True, f"Task '{task['title']}' has been marked as complete."
 
 def view_pending_tasks():
     return [task for task in tasks if not task["completed"]]

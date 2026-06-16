@@ -1,102 +1,11 @@
-from datetime import datetime
+from task_manager import (
+    add_task,
+    mark_task_as_complete,
+    view_pending_tasks,
+    view_all_tasks,
+    calculate_progress,
+)
 
-# Simple in-memory task list for the application.
-tasks = []
-
-def validate_task_title(title):
-    if not isinstance(title, str):
-        raise TypeError("Title must be a string.")
-
-    title = title.strip()
-    if len(title) == 0:
-        raise ValueError("Title cannot be empty.")
-    if len(title) < 3:
-        raise ValueError("Title must be at least 3 characters long.")
-
-    return title
-
-def validate_task_description(description):
-    if not isinstance(description, str):
-        raise TypeError("Description must be a string.")
-
-    description = description.strip()
-    if len(description) == 0:
-        raise ValueError("Description cannot be empty.")
-    if len(description) < 5:
-        raise ValueError("Description must be at least 5 characters long.")
-
-    return description
-
-def validate_due_date(due_date):
-    if not isinstance(due_date, str):
-        raise TypeError("Due date must be a string.")
-
-    due_date = due_date.strip()
-    if len(due_date) == 0:
-        raise ValueError("Due date cannot be empty.")
-
-    try:
-        parsed_date = datetime.strptime(due_date, "%Y-%m-%d").date()
-    except ValueError:
-        raise ValueError("Due date must be in the format YYYY-MM-DD.")
-
-    if parsed_date < datetime.now().date():
-        raise ValueError("Due date must be today or later.")
-
-    return due_date
-
-def add_task(title, description, due_date):
-    title = validate_task_title(title)
-    description = validate_task_description(description)
-    due_date = validate_due_date(due_date)
-
-    task_id = len(tasks) + 1
-    task = {
-        "id": task_id,
-        "title": title,
-        "description": description,
-        "due_date": due_date,
-        "completed": False,
-        "created_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    }
-    tasks.append(task)
-    return task
-
-def mark_task_as_complete(task_id):
-    try:
-        task_id = int(task_id)
-    except (TypeError, ValueError):
-        return False, "Task ID must be a number."
-
-    for task in tasks:
-        if task["id"] == task_id:
-            if task["completed"]:
-                return False, f"Task '{task['title']}' is already completed."
-            task["completed"] = True
-            return True, f"Task '{task['title']}' has been marked as complete."
-
-    return False, f"Task with ID {task_id} not found."
-
-def view_pending_tasks():
-    return [task for task in tasks if not task["completed"]]
-
-
-def view_all_tasks():
-    return list(tasks)
-
-
-def calculate_progress():
-    total_tasks = len(tasks)
-    completed_tasks = sum(1 for task in tasks if task["completed"])
-    pending_tasks = total_tasks - completed_tasks
-    completion_percentage = round((completed_tasks / total_tasks * 100), 2) if total_tasks else 0.0
-
-    return {
-        "total_tasks": total_tasks,
-        "completed_tasks": completed_tasks,
-        "pending_tasks": pending_tasks,
-        "completion_percentage": completion_percentage,
-    }
 
 def prompt_input(prompt_text):
     try:
@@ -106,7 +15,7 @@ def prompt_input(prompt_text):
 
 
 def print_task(task, show_status=False):
-    status = "✓ Completed" if task["completed"] else "○ Pending"
+    status = "Completed" if task["completed"] else "Pending"
     print(f"ID: {task['id']}")
     print(f"Title: {task['title']}")
     print(f"Description: {task['description']}")
@@ -152,7 +61,7 @@ def main():
                 print("\nTask added successfully!")
                 print_task(task, show_status=True)
             except Exception as error:
-                print(f"✗ Error: {error}")
+                print(f"Error: {error}")
 
         elif choice == "2":
             print("\n--- Mark Task as Complete ---")
