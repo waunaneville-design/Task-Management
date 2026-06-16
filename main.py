@@ -40,8 +40,8 @@ def validate_due_date(due_date):
     except ValueError:
         raise ValueError("Due date must be in the format YYYY-MM-DD.")
 
-    if parsed_date <= datetime.now().date():
-        raise ValueError("Due date must be a future date.")
+    if parsed_date < datetime.now().date():
+        raise ValueError("Due date must be today or later.")
 
     return due_date
 
@@ -99,7 +99,11 @@ def calculate_progress():
     }
 
 def prompt_input(prompt_text):
-    return input(prompt_text).strip()
+    try:
+        return input(prompt_text).strip()
+    except EOFError:
+        return None
+
 
 def print_task(task, show_status=False):
     status = "✓ Completed" if task["completed"] else "○ Pending"
@@ -128,16 +132,24 @@ def main():
     while True:
         display_menu()
         choice = prompt_input("Enter your choice (1-6): ")
+        if choice is None:
+            break
 
         if choice == "1":
             print("\n--- Add New Task ---")
             title = prompt_input("Enter task title: ")
+            if title is None:
+                break
             description = prompt_input("Enter task description: ")
+            if description is None:
+                break
             due_date = prompt_input("Enter due date (YYYY-MM-DD): ")
+            if due_date is None:
+                break
 
             try:
                 task = add_task(title, description, due_date)
-                print("\n✓ Task added successfully!")
+                print("\nTask added successfully!")
                 print_task(task, show_status=True)
             except Exception as error:
                 print(f"✗ Error: {error}")
@@ -153,8 +165,13 @@ def main():
                 print(f"ID: {task['id']} - {task['title']} (Due: {task['due_date']})")
 
             task_id = prompt_input("Enter the task ID to mark as complete: ")
+            if task_id is None:
+                break
             success, message = mark_task_as_complete(task_id)
-            print(f"{message}")
+            if success:
+                print("Task marked as complete!")
+            else:
+                print(message)
 
         elif choice == "3":
             print("\n--- Pending Tasks ---")
